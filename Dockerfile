@@ -22,7 +22,12 @@ RUN set -e \
     && wget https://launchpad.net/duplicity/0.8-series/${DUPLICITY_VERSION}/+download/duplicity-${DUPLICITY_VERSION}.tar.gz \
     && wget https://launchpad.net/duplicity/0.8-series/${DUPLICITY_VERSION}/+download/duplicity-${DUPLICITY_VERSION}.tar.gz.sig \
     && export GNUPGHOME="$(mktemp -d)" \
-    && gpg --keyserver hkps.pool.sks-keyservers.net --receive-key 2F9532C8 E654E600 \
+    && for key in E654E600 \
+    ; do \
+        gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
+        gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
+        gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
+    done \
     && gpg --verify duplicity-${DUPLICITY_VERSION}.tar.gz.sig \
     && tar xzf duplicity-${DUPLICITY_VERSION}.tar.gz \
     && cd duplicity-${DUPLICITY_VERSION} \
