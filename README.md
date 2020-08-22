@@ -4,7 +4,7 @@
 
 ## Building the image
 
-Building the image should be easy. You can use the following command: `docker build -t duply <path to the Dockerfile>` or fetch [the-library-code/duply](https://hub.docker.com/r/the-library-code/duply) from Docker Hub.
+Building the image should be easy. You can use the following command: `docker build -t duply <path to the Dockerfile>` or fetch [thelibrarycode/duply](https://hub.docker.com/r/thelibrarycode/duply) from Docker Hub.
 
 
 ## Using the image
