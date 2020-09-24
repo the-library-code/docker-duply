@@ -42,7 +42,7 @@ RUN set -e \
     && chmod +x /usr/local/bin/duply \
     && rm -rf duply_2.2.2/ duply_2.2.2.tgz
 
-RUN mkdir /backup /archive_dir
+RUN mkdir -p /backup /archive_dir /root/.ssh /root/.gnupg
 
 # ENTRYPOINT ["/usr/local/bin/duply"]
 # CMD ["usage"]
