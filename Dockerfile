@@ -42,7 +42,10 @@ RUN set -e \
     && chmod +x /usr/local/bin/duply \
     && rm -rf duply_2.2.2/ duply_2.2.2.tgz
 
-RUN mkdir -p /backup /archive_dir /root/.ssh /root/.gnupg
+RUN mkdir -p /backup /archive_dir /root/.gnupg /root/.ssh \
+    && chmod 700 /root/.gnupg /root/.ssh \
+    && echo 'no-tty\nuse-agent\npinentry-mode loopback' >> /root/.gnupg/gpg.conf \
+    && echo 'allow-loopback-pinentry' >> /root/.gnupg/gpg-agent.conf
 
 # ENTRYPOINT ["/usr/local/bin/duply"]
 # CMD ["usage"]
