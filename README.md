@@ -20,3 +20,21 @@ To create your configuration you must run `duply <profile-name> create` within t
 ## Use duply
 
 Once you created the configuration and edited it, you should be good to go for your first backup. Run `docker run --rm -it -v "$(pwd)"/volumes/duply_config:/etc/duply:cached duply kosmos_docker_volumes backup`. To see usage information of duply run `docker run --rm -it -v "$(pwd)"/volumes/duply_config:/etc/duply:cached duply usage`.
+
+## Caveats
+Different docker containers might have different hostnames. Therefore, you should run duply with the option `--allow-source-mismatch`.
+
+If you use duplicities ssh, sftp, scp backends with paramiko, you might run into a situation, where your backup aborts, as paramiko tries to get a confirmation for the server's ssh key fingerprint. To avoid this, you can add a pre script to duply like the following one:
+
+```
+#!/bin/bash
+
+TARGET_HOST=$( echo $TARGET_URL_HOSTPATH | cut -d '/' -f 1 )
+TARGET_HOST=$( echo ${TARGET_HOST} | cut -d ':' -f 1 )
+
+if [ -d /root/.ssh ]; then
+  ssh-keyscan -H $TARGET_HOST >> /root/.ssh/known_hosts
+fi
+```
+
+This pre script puts the ssh-key to /root/.ssh/known_hosts. Please be aware that this blindly accepts the ssh fingerprint. It would be much safer to create a volume with the known_host file and to load the fingerprint manually once into it.
